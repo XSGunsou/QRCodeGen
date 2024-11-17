@@ -41,10 +41,11 @@
   <input type="color" id="foreground" value="#000000" />
   <br>
   <label for="background">Background Color:</label>
-  <input type="color" id="background" value="#FFFFFF" />
+  <input type="color" id="background" value="#ffffff" />
   <br>
-  <button onclick="generateQRCode()">Generate</button>
+  <button onclick="generateQRCode()">Generate QR Code</button>
   <div id="qrcode"></div>
+  <button id="downloadButton" style="display:none;" onclick="downloadQRCode()">Download QR Code</button>
 
   <!--library-->
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
@@ -79,8 +80,27 @@
           }
           canvas.style.border = "1px solid #000"; 
           qrCodeDiv.appendChild(canvas);
+
+          // dl btn
+          const downloadButton = document.getElementById("downloadButton");
+          downloadButton.style.display = "inline-block";
+          
+          // sv canvas
+          window.canvasForDownload = canvas;
         }
       );
+    }
+
+    function downloadQRCode() {
+      const canvas = window.canvasForDownload;
+      if (canvas) {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL();
+        link.download = 'qr-code.png';
+        link.click();
+      } else {
+        alert("Please generate a QR code first.");
+      }
     }
   </script>
 </body>
